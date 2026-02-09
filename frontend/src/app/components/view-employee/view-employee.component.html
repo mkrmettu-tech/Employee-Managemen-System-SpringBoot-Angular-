@@ -1,0 +1,97 @@
+<div class="view-employee-container">
+  <div class="header">
+    <h2>Employee Details</h2>
+    <button class="btn btn-secondary" (click)="goBack()">← Back to List</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading employee details...</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!loading && employee" class="employee-details">
+    <div class="details-grid">
+      <!-- Personal Information Card -->
+      <div class="details-card">
+        <div class="card-header">
+          <h3>Personal Information</h3>
+        </div>
+        <div class="card-body">
+          <div class="detail-row">
+            <span class="label">Employee ID:</span>
+            <span class="value">{{ employee.id }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Full Name:</span>
+            <span class="value">{{ employee.firstName }} {{ employee.lastName }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Email:</span>
+            <span class="value">
+              <a href="mailto:{{ employee.email }}">{{ employee.email }}</a>
+            </span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Phone Number:</span>
+            <span class="value">{{ employee.phoneNumber }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Address:</span>
+            <span class="value">{{ employee.address || 'N/A' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Employment Information Card -->
+      <div class="details-card">
+        <div class="card-header">
+          <h3>Employment Information</h3>
+        </div>
+        <div class="card-body">
+          <div class="detail-row">
+            <span class="label">Department:</span>
+            <span class="value">
+              <span class="badge badge-department">{{ employee.department }}</span>
+            </span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Position:</span>
+            <span class="value">{{ employee.position }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Hire Date:</span>
+            <span class="value">{{ employee.hireDate | date: 'MMMM dd, yyyy' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Salary:</span>
+            <span class="value">${{ employee.salary | number:'1.2-2' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Status:</span>
+            <span class="value">
+              <span class="badge" [ngClass]="employee.status === 'Active' ? 'badge-active' : 'badge-inactive'">
+                {{ employee.status }}
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button class="btn btn-edit" (click)="editEmployee()">
+        ✏️ Edit Employee
+      </button>
+      <button class="btn btn-delete" (click)="deleteEmployee()">
+        🗑️ Delete Employee
+      </button>
+      <button class="btn btn-secondary" (click)="goBack()">
+        ← Back to List
+      </button>
+    </div>
+  </div>
+</div>

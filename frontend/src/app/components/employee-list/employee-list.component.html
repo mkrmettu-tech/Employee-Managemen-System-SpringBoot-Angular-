@@ -1,0 +1,87 @@
+<div class="employee-list-container">
+  <div class="header">
+    <h1>Employee Management System</h1>
+    <button class="btn btn-primary" (click)="addEmployee()">
+      <span class="icon">+</span> Add New Employee
+    </button>
+  </div>
+
+  <div class="filters">
+    <div class="search-box">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        (input)="searchEmployees()"
+        placeholder="Search by name, email, or department..."
+        class="search-input"
+      />
+    </div>
+    <div class="filter-box">
+      <label>Department:</label>
+      <select [(ngModel)]="selectedDepartment" (change)="filterByDepartment()" class="filter-select">
+        <option value="all">All Departments</option>
+        <option *ngFor="let dept of departments" [value]="dept">{{ dept }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading employees...</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!loading && !errorMessage" class="table-container">
+    <table class="employee-table" *ngIf="filteredEmployees.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Department</th>
+          <th>Position</th>
+          <th>Hire Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of filteredEmployees">
+          <td>{{ employee.id }}</td>
+          <td>{{ employee.firstName }} {{ employee.lastName }}</td>
+          <td>{{ employee.email }}</td>
+          <td>{{ employee.phoneNumber }}</td>
+          <td>
+            <span class="badge badge-department">{{ employee.department }}</span>
+          </td>
+          <td>{{ employee.position }}</td>
+          <td>{{ employee.hireDate | date: 'MMM dd, yyyy' }}</td>
+          <td>
+            <span class="badge" [ngClass]="employee.status === 'Active' ? 'badge-active' : 'badge-inactive'">
+              {{ employee.status }}
+            </span>
+          </td>
+          <td class="actions">
+            <button class="btn btn-view" (click)="viewEmployee(employee.id)" title="View">
+              <span>👁️</span>
+            </button>
+            <button class="btn btn-edit" (click)="editEmployee(employee.id)" title="Edit">
+              <span>✏️</span>
+            </button>
+            <button class="btn btn-delete" (click)="deleteEmployee(employee.id)" title="Delete">
+              <span>🗑️</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="filteredEmployees.length === 0" class="no-data">
+      <p>No employees found.</p>
+    </div>
+  </div>
+</div>
